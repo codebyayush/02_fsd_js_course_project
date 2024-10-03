@@ -5,6 +5,63 @@ const searchBtn = document.querySelector('#search-btn');
 const currSearchBtn = document.querySelector("#current-location");
 const form = document.querySelector('#form');
 
+//adding event listener for current location.
+// if it is supported by browser or not
+currSearchBtn.addEventListener('click', () => {
+
+  if(navigator.geolocation){
+    // if it is supported then passing succesCb & errorCb functions 
+    // to get the current position
+    navigator.geolocation.getCurrentPosition( successCb, errorCb);
+  }
+  else{
+    alert('Geolocation is not supported');
+    console.log('Geolocation is not supported');
+  }
+  
+  //success function
+  function successCb(position){
+    const latitude = position.coords.latitude;
+    const longitude = position.coords.latitude;
+  
+    // passing latitude and longitude 
+    // to get the city name as per the coordinates.
+    getCityName(latitude, longitude);
+  }
+  //error function to pass it on getCurrentPosition 
+  function errorCb(error){
+    console.log(`Error: ${error.message}`);
+  }
+
+  // fetching the city name using url with latitude and longitude
+  async function getCityName(lati, longi){
+      const apiUrl = `https://api.openweathermap.org/geo/1.0/reverse?lat=${lati}&lon=${longi}&limit=1&appid=${apiKey}`
+ 
+      try {
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+    
+        // checking if the data have city name by using length
+        // if it is there then returning city name.
+        if (data && data.length > 0) {
+          const cityName = data[0].name;
+          console.log(cityName);
+          //calling weatherCheck function with the city name we got.
+          weatherCheck(cityName);
+        } else {
+          console.log("city not found");
+          return null;
+        }
+      }
+      catch (error) {
+        console.error('Error fetching city name:', error);
+        return null;
+      }
+ 
+    }
+})
+
+
 // weather check according to entered city
 async function weatherCheck(city){
 
@@ -51,6 +108,9 @@ async function weatherCheck(city){
 
                   // SIMILARLY ADDING NEXT FIVE DAY'S FORECAST
                   const container = document.getElementById('w-fiveday');
+
+                  //clearing out the previous data we fetched inside of container
+                  container.innerHTML = "";
 
                   // looping through the list to its length,
                   // assigning formatDate to prevDate which is current day date
