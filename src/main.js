@@ -28,6 +28,7 @@ currSearchBtn.addEventListener("click", () => {
   }
   //error function to pass it on getCurrentPosition
   function errorCb(error) {
+    alert("Geolocation denied");
     console.log(`Error: ${error.message}`);
   }
 
