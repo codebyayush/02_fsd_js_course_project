@@ -924,6 +924,10 @@ video {
 }
 
 @media (max-width: 1200px) {
+  .screen-max-12\:mb-14 {
+    margin-bottom: 3.5rem;
+  }
+
   .screen-max-12\:w-fit {
     width: -moz-fit-content;
     width: fit-content;
