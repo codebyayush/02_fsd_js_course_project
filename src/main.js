@@ -20,7 +20,7 @@ currSearchBtn.addEventListener("click", () => {
   //success function
   function successCb(position) {
     const latitude = position.coords.latitude;
-    const longitude = position.coords.latitude;
+    const longitude = position.coords.longitude;
 
     // passing latitude and longitude
     // to get the city name as per the coordinates.
